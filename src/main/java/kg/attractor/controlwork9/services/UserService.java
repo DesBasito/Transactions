@@ -53,7 +53,7 @@ public class UserService{
         if (userModelRepository.existsByEmail(dto.getEmail())) {
             throw new AlreadyExistsException("User with email:" + dto.getEmail() + " already exists.");
         }
-        Authority authority = authorityRepository.findByRole(dto.getRole()).orElseThrow(() -> new NoSuchElementException("authority not found"));
+        Authority authority = authorityRepository.findAll().getFirst();
         UserModel userModel = UserModel.builder()
                 .name(dto.getName())
                 .surname(dto.getSurname())
@@ -61,6 +61,7 @@ public class UserService{
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .enabled(true)
                 .role(authority)
+                .resetPasswordToken(null)
                 .build();
         userModelRepository.save(userModel);
     }

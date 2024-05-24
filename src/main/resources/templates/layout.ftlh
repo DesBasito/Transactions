@@ -37,8 +37,7 @@
     <header>
         <nav class="navbar navbar-expand-md bg-dark " data-bs-theme="dark">
             <div class="container">
-                <a class="navbar-brand" href="/"><img src="/api/users/image/logo.png" width="100px"
-                                                      alt="Job search"></a>
+                <a class="navbar-brand" href="/">Control work</a>
                 <button class="navbar-toggler text-light bg-orange btn-user ms-auto" type="button"
                         data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -54,44 +53,40 @@
                         data-bs-toggle="tooltip" data-bs-placement="left" title="Profile">
                     <i class="bi bi-person-circle"></i>
                 </button>
-                <#if authorizedUserEmail??>
-                    <form action="/logout" method="post">
-                        <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
-                               value="${(_csrf.token)!'--no-token--'}"/>
-                        <button type="submit" class="btn btn-user bg-orange rounded-1 text-light fs-5 ms-3">logout</button>
-                    </form>
-                </#if>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav fw-medium mx-auto">
                         <#if role??>
-                                <li class="nav-item" id="userAuthority">
-                                    <a class="nav-link active" aria-current="page" href="/"><#if role = 'employer'>
-                                            Резюме
-                                        <#else >
-                                            Вакансии
-                                        </#if>
-                                    </a>
-                                </li>
 
                         <#else >
-                            <li class="nav-item" id="userAuthority">
-                                <a class="nav-link active" aria-current="page" href="/">Вакансии
-                                </a>
-                            </li>
                         </#if>
 
-                        <li class="mx-2 nav-item">
-                            <a class="nav-link " href="#">Компании</a>
-                        </li>
-                        <li class="mx-2 nav-item">
-                            <a class="nav-link" href="/api/users/image/Prime.jpeg">связатся с тех-поддержкой</a>
-                        </li>
-                        <li class="mx-2 nav-item">
-                            <a class="nav-link" href="/register">Регистрироваться</a>
-                        </li>
+                        <#if authorizedUserEmail??>
+                        <#else >
+                            <li class="mx-2 nav-item">
+                                <a class="nav-link" href="/register"><@spring.message 'register'/></a>
+                            </li>
+                        </#if>
                     </ul>
                 </div>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle bg-orange" type="button" id="dropdownMenuButton7"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <@spring.message 'layout.change.lang'/>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
+                        <li><a class="dropdown-item" href="?lang=ru"><@spring.message 'layout.russian' /></a></li>
+                        <li><a class="dropdown-item" href="?lang=en"><@spring.message 'layout.english' /></a></li>
+                    </ul>
+                </div>
+                <#if authorizedUserEmail??>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                               value="${(_csrf.token)!'--no-token--'}"/>
+                        <button type="submit"
+                                class="btn btn-user bg-orange rounded-1 text-light fs-5 ms-3"><@spring.message 'logout'/></button>
+                    </form>
+                </#if>
             </div>
         </nav>
     </header>

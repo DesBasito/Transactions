@@ -37,12 +37,14 @@ public class MainController {
 
     @GetMapping()
     public String getMainPage(Model model) {
-        return null;
+        return "main/main";
     }
 
     @GetMapping("/profile")
-    public String applicantInfo(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
-        return null;
+    public String applicantInfo(@RequestParam(name = "page", defaultValue = "0") int page,Model model) {
+        model.addAttribute("user",adapter.getAuthUser());
+        model.addAttribute("page",page);
+        return "users/profile";
     }
 
 

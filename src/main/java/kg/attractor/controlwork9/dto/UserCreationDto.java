@@ -26,7 +26,4 @@ public class UserCreationDto {
     @NotBlank
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).+$", message = "{register.valid.password}")
     private String password;
-
-    @NotNull @NotBlank
-    private String role;
 }

@@ -39,7 +39,6 @@
                             </div>
 
                             <div class="col-md-6 mb-4 pb-2">
-                                <label for="surname">Фамилия</label>
                                 <label for="surname"><@spring.message "surname"/></label>
                                 <@spring.formInput 'userCreationDto.surname' 'id="surname" class="form-control form-control-lg"' />
                                 <@spring.showErrors '<br/>' '${errorClassList}' />

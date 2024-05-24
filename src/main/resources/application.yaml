@@ -24,7 +24,7 @@ spring:
   mail:
     host: smtp.gmail.com
     username: basit.03.kg@gmail.com
-    password:
+    password: lppl cibr qxsm dmgd
     port: 587
     properties:
       mail:

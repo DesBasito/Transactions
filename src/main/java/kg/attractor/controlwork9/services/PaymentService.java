@@ -76,7 +76,7 @@ public class PaymentService {
         UserProviderDto userProviderDto = providerService.getUserProviderDto(recipient);
         UserProvider userProvider = providerService.getUserProvider(recipient);
         Provider provider1 = providerService.getProviderById(userProviderDto.getProviderId());
-        if (senderAccount.getBalance() < senderAccount.getBalance() - (balance+(balance*provider1.getCommission())) || balance > senderAccount.getBalance()) {
+        if (0 > senderAccount.getBalance() - (balance+(balance*provider1.getCommission())) || balance > senderAccount.getBalance()) {
             throw new IllegalArgumentException("you have only " + senderAccount.getBalance() + "$ and услуга ");
         }
 

@@ -73,7 +73,7 @@ public class PaymentService {
         Provider provider = new Provider();
         UserProvider userProvider1 = new UserProvider();
         AccountDto senderAccount = accountService.getAccount(senderModel);
-        if (senderAccount.getBalance() < 6 || balance > senderAccount.getBalance()) {
+        if (senderAccount.getBalance() < balance + senderAccount.getBalance() || balance > senderAccount.getBalance()) {
             throw new IllegalArgumentException("you have only " + senderAccount.getBalance() + "$ and услуга ");
         }
         UserProviderDto userProviderDto = providerService.getUserProviderDto(recipient);

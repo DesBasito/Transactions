@@ -34,12 +34,6 @@ public class UserService {
     private final EmailService emailService;
 
 
-    public UserDto getUser(String email) {
-        UserModel userModel = userModelRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        String accType = getAccTypeByUserEmail(email);
-        return getUserDto(userModel, accType);
-    }
-
     private String getAccTypeByUserEmail(String email) {
         UserModel user = userModelRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         return user.getRole().getRole();
@@ -49,9 +43,6 @@ public class UserService {
     public UserDto getUserByEmail(String email) {
         String accType = getAccTypeByUserEmail(email);
         return getUserDto(userModelRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("user with email: " + email + " does not exists")), accType);
-    }
-    public UserModel getUserModelByUniqueId(String id) {
-        return userModelRepository.findByUniqueId(id).orElseThrow(() -> new UserNotFoundException("user with unique id: " + id + " does not exists"));
     }
 
     public UserModel createUser(UserCreationDto dto) {
@@ -71,10 +62,12 @@ public class UserService {
                 .resetPasswordToken(null)
                 .build();
         UserModel user =userModelRepository.save(userModel);
+        log.info("added to database new user {}",user.getEmail());
         Account account = new Account();
         account.setOwner(user);
         account.setBalance(0.0);
-        accountService.saveAccount(account);
+        Account account1 = accountService.saveAccount(account);
+        log.info("created new wallet for user {}"+account.getId(),user.getEmail());
        return user;
     }
 
@@ -90,6 +83,10 @@ public class UserService {
 
     public UserModel getUserModelByEmail(String email) {
         return userModelRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User by email " + email + " not found"));
+    }
+
+    public UserModel getUserModelByUniqueId(String id) {
+        return userModelRepository.findByUniqueId(id).orElseThrow(() -> new UserNotFoundException("User by username " + id + " not found"));
     }
 
 
@@ -121,6 +118,7 @@ public class UserService {
         user.setPassword(encodedPassword);
         user.setResetPasswordToken(null);
         userModelRepository.saveAndFlush(user);
+        log.info("{} changed password",user.getEmail());
     }
 
     public void makeResetPasswdLink(HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {

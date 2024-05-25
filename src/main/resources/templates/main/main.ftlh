@@ -10,7 +10,7 @@
             <form action="/" method="get">
                 <div class="d-flex justify-center">
                 <input class="form-control" type="search" aria-label="Search" name="recipient" data-search>
-                <button class="btn btn-success" type="submit">search</button></div>
+                <button class="btn btn-success" type="submit"><@spring.message "search"/></button></div>
             </form>
             <#if recipient??>
                 <div class="card my-3">
@@ -26,10 +26,23 @@
                                 <h5 class="card-title"><a href="/provider/${provider.id}"
                                                           class="text-decoration-none text-dark">${provider.name}</a>
                                 </h5>
-                                <p>commission: ${provider.commission}</p>
+                                <p><@spring.message "commission"/>: ${provider.commission}</p>
                             </div>
                         </div>
                     </#list>
+                    <div class="my-2" id="pagination-profile">
+                        <nav class="mb-2" aria-label="Page navigation example" id="applicant-pageButtons">
+                            <ul class="pagination">
+                                <#if page = 0>
+                                    <li class="page-item"><a class="page-link" href="/?page=${page}">&laquo;</a></li>
+                                <#else >
+                                    <li class="page-item"><a class="page-link" href="/?page=${page-1}">&laquo;</a></li>
+                                </#if>
+                                <li class="page-item page-link">${page}</li>
+                                <li class="page-item"><a class="page-link" href="/?page=${page + 1}">&raquo;</a></li>
+                            </ul>
+                        </nav>
+                    </div>
             </#if>
             <nav aria-label="Page navigation example" id="paging-buttons">
             </nav>
@@ -50,7 +63,7 @@
                                 </div>
                                 <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
                                        value="${(_csrf.token)!'--no-token--'}"/>
-                                <button type="submit" class="btn btn-primary">pay</button>
+                                <button type="submit" class="btn btn-primary"><@spring.message "pay"/></button>
                             </form>
                             <#else >
                         </#if>
@@ -67,7 +80,7 @@
                             </div>
                             <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
                                    value="${(_csrf.token)!'--no-token--'}"/>
-                            <button type="submit" class="btn btn-primary">pay</button>
+                            <button type="submit" class="btn btn-primary"><@spring.message "pay"/></button>
                         </form>
                         </#if>
                     </#if>
@@ -75,8 +88,4 @@
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
-    <script src="/js/main.js"></script>
 </@main.layout>

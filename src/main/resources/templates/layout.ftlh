@@ -37,7 +37,7 @@
     <header>
         <nav class="navbar navbar-expand-md bg-dark " data-bs-theme="dark">
             <div class="container">
-                <a class="navbar-brand" href="/">Control work</a>
+                <a class="navbar-brand" href="/"><@spring.message "exam"/></a>
                 <button class="navbar-toggler text-light bg-orange btn-user ms-auto" type="button"
                         data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -56,12 +56,8 @@
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav fw-medium mx-auto">
-                        <#if role??>
-
-                        <#else >
-                        </#if>
-
                         <#if authorizedUserEmail??>
+                            <p class="text-light"><@spring.message "username"/>: ${authorizedUserEmail.username}</p>
                         <#else >
                             <li class="mx-2 nav-item">
                                 <a class="nav-link" href="/register"><@spring.message 'register'/></a>
@@ -94,7 +90,8 @@
     <body style=" height: 100vh;">
     <div class=" py-5">
         <div class="container">
-            <#nested spring>
+            <div id="balance"></div>
+            <#nested spring >
         </div>
     </div>
 
@@ -104,8 +101,8 @@
     <footer class="py-5" style="background-color: #5d5d5d;">
         <div class="container footer-container text-dark">
             <div class=" opacity-75">
-                <a href="#" class="text-decoration-none">Соглашение пользователя </a>
-                <p>«Copyright © Название 2023»</p>
+                <a href="#" class="text-decoration-none"><@spring.message "agreement"/></a>
+                <p>«Copyright © <@spring.message "title"/> 2023»</p>
             </div>
 
             <div class="numbers ms-lg-5 mb-2 ms-md-3 ps-3  ">
@@ -114,5 +111,34 @@
             </div>
         </div>
     </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        <#if authorizedUserEmail??>
+        let balance = document.getElementById('balance')
+
+        window.onload = () => {
+            fetchBalance();
+            setInterval(fetchBalance, 20000);
+        };
+
+        async function fetchBalance() {
+            try {
+                let response = await fetch(`api/balance/${authorizedUserEmail.username}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                let data = await response.json();
+                console.log(data);
+                balance.innerText = `<@spring.message "balance"/>: ` + data;
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        }
+
+        </#if>
+    </script>
     </html>
+
 </#macro>

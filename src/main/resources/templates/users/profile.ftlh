@@ -19,39 +19,6 @@
             </div>
         </div>
 
-        <#--        <#if resumes?has_content>-->
-        <#--            <h6 class="mt-5"><@spring.message 'profile.resume'/> :</h6>-->
-        <#--            <div class="row row-cols-1 row-cols-md-3 g-4">-->
-        <#--                <#list resumes.content as resume>-->
-        <#--                    <div class="col mb-3">-->
-        <#--                        <div class="card">-->
-        <#--                            <div class="card-body">-->
-        <#--                                <h5 class="card-title"><a href="/resume/${resume.id}"-->
-        <#--                                                          class="text-decoration-none text-dark">${resume.name}</a>-->
-        <#--                                </h5>-->
-        <#--                                <hr>-->
-        <#--                                <p class="card-text"><@spring.message 'profile.last.update'/>: <span-->
-        <#--                                            id="${resume.id}_last-update">${resume.updateDate}</span></p>-->
-        <#--                            </div>-->
-        <#--                        </div>-->
-        <#--                        <div class="card-footer d-flex justify-content-between gx-2 my-2">-->
-        <#--                            <div>-->
-        <#--                                <button onclick="updateResume(${resume.id})" class="btn btn-primary"-->
-        <#--                                        style="width: 150px"><@spring.message 'profile.update'/>-->
-        <#--                                </button>-->
-        <#--                            </div>-->
-
-        <#--                            <div>-->
-        <#--                                <button type="button" class="btn btn-success " style="width: 150px"-->
-        <#--                                        onclick="window.location.href='/resume/edit/${resume.id}'">-->
-        <#--                                    <@spring.message 'profile.edit'/>-->
-        <#--                                </button>-->
-        <#--                            </div>-->
-        <#--                        </div>-->
-        <#--                    </div>-->
-        <#--                </#list>-->
-        <#--            </div>-->
-        <#--        </#if>-->
         <table class="table">
             <thead>
             <tr class="table-active">
@@ -74,7 +41,7 @@
                             <#if transfer.sender??>
                                 <p>${transfer.sender}</p>
                             <#else >
-                                <p>Terminal</p>
+                                <p><@spring.message "terminal"/></p>
                             </#if>
                         </th>
                         <td>
@@ -83,7 +50,7 @@
                             <#elseif transfer.recipient??>
                                 <p>${transfer.recipient}</p>
                                 <#else>
-                                <p>unknown</p>
+                                <p>?</p>
                             </#if>
                         </td>
                         <td>
@@ -112,32 +79,4 @@
             </nav>
         </div>
     </div>
-
-    <script>
-        const csrfToken = document.querySelector("meta[name='_csrf_token']").content;
-        const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
-        const headers = {
-            'Content-Type': 'application/json',
-            [csrfHeader]: csrfToken
-        };
-
-        async function updateResume(id) {
-            const lastUpdateElement = document.getElementById(id + '_last-update');
-            try {
-                const response = await fetch(`/api/resumes/update/` + id, {
-                    method: 'PUT',
-                    headers: headers
-                });
-
-                if (response.ok) {
-                    const resume = await response.json();
-                    lastUpdateElement.textContent = resume.updateDate;
-                } else {
-                    console.error('Failed to update resume');
-                }
-            } catch (error) {
-                console.error('Error updating resume:', error);
-            }
-        }
-    </script>
 </@main.layout>

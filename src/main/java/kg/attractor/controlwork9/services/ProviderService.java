@@ -55,7 +55,8 @@ public class ProviderService {
     }
 
     public void save(Provider provider) {
-        providerRepository.save(provider);
+       Provider provider1 =  providerRepository.save(provider);
+       log.info("added new provider {}",provider1.getName());
     }
 
     public ProviderDto getProviderDtoById(Long id) {

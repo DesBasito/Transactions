@@ -25,7 +25,7 @@ public class TransferService {
         List<Transfers> transfersRecipients = transfersRepository.findTransfersByRecipient_Email(email);
         transfers.addAll(transfersSender);
         transfers.addAll(transfersRecipients);
-        transfers.sort(Comparator.comparing(Transfers::getTransactionDate));
+        transfers.sort(Comparator.comparing(Transfers::getTransactionDate).reversed());
         return transfers.stream().map(this::getDto).collect(Collectors.toList());
     }
 
@@ -41,6 +41,7 @@ public class TransferService {
     }
 
     public void saveTransfer(Transfers transfers) {
-        transfersRepository.save(transfers);
+       Transfers transfer =  transfersRepository.save(transfers);
+       log.info("created new transfer: "+transfer.getId());
     }
 }

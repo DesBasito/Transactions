@@ -54,6 +54,7 @@ public class MainController {
         model.addAttribute("paymentDto", paymentDto);
         Page<ProviderDto> providers = providerService.getAllProviders(page);
         model.addAttribute("providers", providers);
+        model.addAttribute("page", page);
         return "main/main";
     }
 

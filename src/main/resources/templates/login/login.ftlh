@@ -50,22 +50,22 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <script>
-        let params = new URLSearchParams(window.location.search);
-        if (params.has("error")) {
-            window.onload = () => {
-                let msg = $('#login-text')
+<#--    <script>-->
+<#--        let params = new URLSearchParams(window.location.search);-->
+<#--        if (params.has("error")) {-->
+<#--            window.onload = () => {-->
+<#--                let msg = $('#login-text')-->
 
-                $(msg).text('Неверный email или пароль...')
-                $(msg).addClass('text-danger');
-                $(msg).removeClass('text-black-50');
-            }
-        }
+<#--                $(msg).text('Неверный email или пароль...')-->
+<#--                $(msg).addClass('text-danger');-->
+<#--                $(msg).removeClass('text-black-50');-->
+<#--            }-->
+<#--        }-->
 
-        const checkUser = document.getElementById('submission')
-        checkUser.addEventListener('click', () => {
-            const userEmail = document.querySelector('[name = "username"]').value;
-            localStorage.setItem('user', userEmail)
-        })
-    </script>
+<#--        const checkUser = document.getElementById('submission')-->
+<#--        checkUser.addEventListener('click', () => {-->
+<#--            const userEmail = document.querySelector('[name = "username"]').value;-->
+<#--            localStorage.setItem('user', userEmail)-->
+<#--        })-->
+<#--    </script>-->
 </@main.layout>

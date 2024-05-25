@@ -55,6 +55,7 @@ public class PaymentService {
 
         accountService.saveAccount(account);
         saveTransfer(null,recipientModel,balance);
+        log.info("filled wallet by id: "+recipientAccount.getId()+" by terminal");
     }
 
     private void saveTransfer(UserModel sender, UserModel recipient, Double balance){

@@ -18,5 +18,6 @@ public class TransferDto {
     private Double sumOfTransfer;
     private String sender;
     private String recipient;
+    private String provider;
     private String transactionDate;
 }

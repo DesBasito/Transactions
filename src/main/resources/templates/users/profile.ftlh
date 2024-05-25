@@ -11,7 +11,11 @@
 
         <div class="col-md">
             <div class="card border-0 align-items-center text-align-center">
-                ${user.uuid}
+               #${user.uuid}
+            </div>
+
+            <div class="card border-0 align-items-center text-align-center">
+                ${account.balance}$
             </div>
         </div>
 
@@ -60,29 +64,37 @@
             </thead>
             <tbody>
 
-            <#list transfers as transfer>
-                <tr>
-                    <td>
-                        <p>${transfer?counter}</p>
-                    </td>
-                    <th>
-                        <#if transfer.sender??>
-                            <p>${transfer.sender}</p>
+            <#if transfers??>
+                <#list transfers as transfer>
+                    <tr>
+                        <td>
+                            <p>${transfer?counter}</p>
+                        </td>
+                        <th>
+                            <#if transfer.sender??>
+                                <p>${transfer.sender}</p>
                             <#else >
-                            <p>Terminal</p>
-                        </#if>
-                    </th>
-                    <td>
-                        <p>${transfer.recipient}</p>
-                    </td>
-                    <td>
-                        <p>${transfer.sumOfTransfer}</p>
-                    </td>
-                    <td>
-                        <p>${transfer.transactionDate}</p>
-                    </td>
-                </tr>
-            </#list>
+                                <p>Terminal</p>
+                            </#if>
+                        </th>
+                        <td>
+                            <#if transfer.provider??>
+                                <p>${transfer.provider}</p>
+                            <#elseif transfer.recipient??>
+                                <p>${transfer.recipient}</p>
+                                <#else>
+                                <p>unknown</p>
+                            </#if>
+                        </td>
+                        <td>
+                            <p>${transfer.sumOfTransfer}</p>
+                        </td>
+                        <td>
+                            <p>${transfer.transactionDate}</p>
+                        </td>
+                    </tr>
+                </#list>
+            </#if>
 
             </tbody>
         </table>

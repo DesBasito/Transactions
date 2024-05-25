@@ -27,3 +27,16 @@ VALUES (200.00, 'john.doe@example.com', 'jane.smith@example.com', '2024-05-25 10
        (500.00, 'alice.jones@example.com', 'bob.brown@example.com', '2024-05-25 12:00:00'),
        (100.00, 'bob.brown@example.com', 'john.doe@example.com', '2024-05-25 13:00:00');
 
+INSERT INTO PROVIDERS (NAME,Balance)
+VALUES
+    ('O!',0.0),
+    ('Beeline',0.0),
+    ('Megacom',0.0),
+    ('BSK',0.0);
+
+INSERT INTO USERS_PROVIDER (identifier, provider, balance)
+VALUES
+    ('john_provider', (SELECT id FROM PROVIDERS WHERE NAME = 'O!'),0.0),
+    ('jane_provider', (SELECT id FROM PROVIDERS WHERE NAME = 'Beeline'),0.0),
+    ('alice_provider', (SELECT id FROM PROVIDERS WHERE NAME = 'BSK'),0.0),
+    ('bob_provider', (SELECT id FROM PROVIDERS WHERE NAME = 'Megacom'),0.0);

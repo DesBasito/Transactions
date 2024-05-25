@@ -1,5 +1,52 @@
 databaseChangeLog:
   - changeSet:
+      id: create-providers-table
+      author: Abu
+      changes:
+        - createTable:
+            tableName: Providers
+            columns:
+              - column:
+                  name: id
+                  type: Long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: Double
+  - changeSet:
+      id: create-users-of-providers-table
+      author: Abu
+      changes:
+        - createTable:
+            tableName: users_provider
+            columns:
+              - column:
+                  name: identifier
+                  type: varchar(45)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: Double
+              - column:
+                  name: provider
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_provider_id
+                    nullable: true
+                    deleteCascade: true
+                    references: providers(id)
+
+  - changeSet:
       id: create-account-table
       author: Abu
       changes:
@@ -26,6 +73,7 @@ databaseChangeLog:
                     nullable: false
                     deleteCascade: true
                     references: users(email)
+
   - changeSet:
       id: create-transfer-table
       author: Abu
@@ -56,9 +104,17 @@ databaseChangeLog:
                   type: varchar(45)
                   constraints:
                     foreignKeyName: fk_recipient_account_id
-                    nullable: false
+                    nullable: true
                     deleteCascade: true
                     references: users(email)
+              - column:
+                  name: provider_user
+                  type: varchar(255)
+                  constraints:
+                    foreignKeyName: fk_transfer_provider_user
+                    nullable: true
+                    deleteCascade: true
+                    references: users_provider(identifier)
               - column:
                   name: transaction_date
                   type: timestamp

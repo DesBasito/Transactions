@@ -6,13 +6,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import kg.attractor.controlwork9.AuthAdapter;
 import kg.attractor.controlwork9.dto.*;
+import kg.attractor.controlwork9.models.Provider;
 import kg.attractor.controlwork9.models.Transfers;
 import kg.attractor.controlwork9.models.UserModel;
 import kg.attractor.controlwork9.services.AccountService;
+import kg.attractor.controlwork9.services.ProviderService;
 import kg.attractor.controlwork9.services.TransferService;
 import kg.attractor.controlwork9.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +36,7 @@ public class MainController {
     private final UserService userService;
     private final AccountService accountService;
     private final TransferService transferService;
+    private final ProviderService providerService;
     private final AuthAdapter adapter;
 
     @GetMapping("/login")
@@ -41,7 +45,15 @@ public class MainController {
     }
 
     @GetMapping()
-    public String getMainPage() {
+    public String getMainPage(@RequestParam(name = "page", defaultValue = "0") int page,@RequestParam(name = "recipient", defaultValue = "") String recipientId, Model model) {
+        if (!recipientId.isEmpty() && !recipientId.isBlank()) {
+            UserDto user = userService.getUserByUniqueId(recipientId);
+            model.addAttribute("recipient", user);
+        }
+        PaymentDto paymentDto = new PaymentDto();
+        model.addAttribute("paymentDto", paymentDto);
+        Page<ProviderDto> providers = providerService.getAllProviders(page);
+        model.addAttribute("providers", providers);
         return "main/main";
     }
 

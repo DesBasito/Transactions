@@ -16,8 +16,8 @@ import java.util.NoSuchElementException;
 public class AccountService {
     private final AccountRepository accountRepository;
 
-    public AccountDto getAccount(UserModel uniqueId){
-        return getDto(accountRepository.findAccountByOwner(uniqueId).orElseThrow(()->new NoSuchElementException("Account by owner id"+ uniqueId +" not found")));
+    public AccountDto getAccount(UserModel owner){
+        return getDto(accountRepository.findAccountByOwner(owner).orElseThrow(()->new NoSuchElementException("Account by owner "+ owner.getEmail() +" not found")));
     }
 
     private AccountDto getDto(Account account){

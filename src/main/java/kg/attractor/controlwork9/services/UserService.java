@@ -50,6 +50,9 @@ public class UserService {
         String accType = getAccTypeByUserEmail(email);
         return getUserDto(userModelRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("user with email: " + email + " does not exists")), accType);
     }
+    public UserModel getUserModelByUniqueId(String id) {
+        return userModelRepository.findByUniqueId(id).orElseThrow(() -> new UserNotFoundException("user with unique id: " + id + " does not exists"));
+    }
 
     public UserModel createUser(UserCreationDto dto) {
         if (userModelRepository.existsByEmail(dto.getEmail())) {
@@ -130,6 +133,7 @@ public class UserService {
     }
 
     public UserDto getUserByUniqueId(String name) {
-        return getUserDto(userModelRepository.findByUniqueId(name).orElseThrow(NoSuchElementException::new),"USER");
+        UserModel userModel = userModelRepository.findByUniqueId(name).orElse(null);
+        return userModel==null?null:getUserDto(userModel,"User");
     }
 }

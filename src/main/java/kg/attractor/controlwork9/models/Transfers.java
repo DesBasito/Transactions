@@ -28,6 +28,10 @@ public class Transfers {
     @JoinColumn(name = "recipient_id")
     private UserModel recipient;
 
+    @ManyToOne
+    @JoinColumn(name = "provider_user")
+    private UserProvider recipientProvider;
+
     @Column(name = "transaction_date")
     private LocalDateTime transactionDate;
 }

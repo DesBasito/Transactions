@@ -30,6 +30,9 @@ public class SecurityConfig {
                         .permitAll())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/profile").authenticated()
+                        .requestMatchers("/payment").authenticated()
+                        .requestMatchers(HttpMethod.POST,"provider/*").authenticated()
+                        .requestMatchers("/payment/anon").permitAll()
                         .anyRequest().permitAll());
         return http.build();
     }

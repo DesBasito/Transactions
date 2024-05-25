@@ -66,4 +66,8 @@ public class ProviderService {
     public UserProvider getUserProvider(String recipient) {
         return userProviderRepository.findByIdentifier(recipient).orElseThrow(NoSuchElementException::new);
     }
+
+    public void saveUserProvider(UserProvider userProvider1) {
+        userProviderRepository.save(userProvider1);
+    }
 }

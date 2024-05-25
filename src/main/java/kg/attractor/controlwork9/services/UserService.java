@@ -6,6 +6,7 @@ import kg.attractor.controlwork9.dto.UserCreationDto;
 import kg.attractor.controlwork9.dto.UserDto;
 import kg.attractor.controlwork9.exceptions.AlreadyExistsException;
 import kg.attractor.controlwork9.exceptions.UserNotFoundException;
+import kg.attractor.controlwork9.models.Account;
 import kg.attractor.controlwork9.models.Authority;
 import kg.attractor.controlwork9.models.UserModel;
 import kg.attractor.controlwork9.repositories.AuthorityRepository;
@@ -19,15 +20,16 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService{
+public class UserService {
     private final UserModelRepository userModelRepository;
     private final AuthorityRepository authorityRepository;
+    private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
@@ -49,10 +51,11 @@ public class UserService{
         return getUserDto(userModelRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("user with email: " + email + " does not exists")), accType);
     }
 
-    public void createUser(UserCreationDto dto) {
+    public UserModel createUser(UserCreationDto dto) {
         if (userModelRepository.existsByEmail(dto.getEmail())) {
             throw new AlreadyExistsException("User with email:" + dto.getEmail() + " already exists.");
         }
+        String uuid = generateID();
         Authority authority = authorityRepository.findAll().getFirst();
         UserModel userModel = UserModel.builder()
                 .name(dto.getName())
@@ -61,11 +64,26 @@ public class UserService{
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .enabled(true)
                 .role(authority)
+                .uniqueId(uuid)
                 .resetPasswordToken(null)
                 .build();
-        userModelRepository.save(userModel);
+        UserModel user =userModelRepository.save(userModel);
+        Account account = new Account();
+        account.setOwner(user);
+        account.setBalance(0.0);
+        accountService.saveAccount(account);
+       return user;
     }
 
+    private String generateID() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            sb.append(random.nextInt(10));
+        }
+        UserModel userModel = userModelRepository.findByUniqueId(sb.toString()).orElse(null);
+        return userModel == null ? sb.toString() : generateID();
+    }
 
     public UserModel getUserModelByEmail(String email) {
         return userModelRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User by email " + email + " not found"));
@@ -78,6 +96,7 @@ public class UserService{
                 .surname(userModel.getSurname())
                 .role(accType)
                 .email(userModel.getEmail())
+                .uuid(userModel.getUniqueId())
                 .build();
     }
 
@@ -107,7 +126,10 @@ public class UserService{
         updateResetPasswordToken(token, email);
 
         String resetPasswordLnk = Utility.getSiteURL(request) + "/reset_password?token=" + token;
-        emailService.sendEmail(email,resetPasswordLnk);
+        emailService.sendEmail(email, resetPasswordLnk);
     }
 
+    public UserDto getUserByUniqueId(String name) {
+        return getUserDto(userModelRepository.findByUniqueId(name).orElseThrow(NoSuchElementException::new),"USER");
+    }
 }

@@ -26,6 +26,9 @@ public class UserModel {
     @Lob
     private String password;
 
+    @Column(name = "unique_id")
+    private String uniqueId;
+
     @Column
     private Boolean enabled;
 
@@ -35,4 +38,13 @@ public class UserModel {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Authority role;
+
+    @OneToOne(mappedBy = "owner")
+    private Account user;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "sender")
+    List<Transfers> senders;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "recipient")
+    List<Transfers> recipients;
 }

@@ -22,7 +22,7 @@ public class AuthAdapter {
             throw new IllegalArgumentException("user not authorized");
         }
         String name = authentication.getName();
-        return service.getUserByEmail(name);
+        return service.getUserByUniqueId(name);
     }
 
 }

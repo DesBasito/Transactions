@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-account-table
+      author: Abu
+      changes:
+        - createTable:
+            tableName: Accounts
+            columns:
+              - column:
+                  name: id
+                  type: Integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: Double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner
+                  type: varchar(55)
+                  constraints:
+                    foreignKeyName: fk_user_email
+                    nullable: false
+                    deleteCascade: true
+                    references: users(email)
+  - changeSet:
+      id: create-transfer-table
+      author: Abu
+      changes:
+        - createTable:
+            tableName: transfers
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: sum_of_transfer
+                  type: Double
+              - column:
+                  name: sender_id
+                  type: varchar(45)
+                  constraints:
+                    foreignKeyName: fk_sender_account_id
+                    nullable: true
+                    deleteCascade: true
+                    references: users(email)
+              - column:
+                  name: recipient_id
+                  type: varchar(45)
+                  constraints:
+                    foreignKeyName: fk_recipient_account_id
+                    nullable: false
+                    deleteCascade: true
+                    references: users(email)
+              - column:
+                  name: transaction_date
+                  type: timestamp
+                  constraints:
+                    nullable: false

@@ -20,7 +20,7 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserModel user = userModelRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
-        return new User(user.getEmail(),user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole().getRole())));
+        UserModel user = userModelRepository.findByUniqueId(username).orElseThrow(UserNotFoundException::new);
+        return new User(user.getUniqueId(),user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole().getRole())));
     }
 }

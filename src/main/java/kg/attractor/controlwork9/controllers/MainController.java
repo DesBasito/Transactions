@@ -5,9 +5,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import kg.attractor.controlwork9.AuthAdapter;
-import kg.attractor.controlwork9.dto.PasswordDto;
-import kg.attractor.controlwork9.dto.UserCreationDto;
+import kg.attractor.controlwork9.dto.*;
+import kg.attractor.controlwork9.models.Transfers;
 import kg.attractor.controlwork9.models.UserModel;
+import kg.attractor.controlwork9.services.AccountService;
+import kg.attractor.controlwork9.services.TransferService;
 import kg.attractor.controlwork9.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -28,6 +31,8 @@ import java.io.UnsupportedEncodingException;
 @RequestMapping("/")
 public class MainController {
     private final UserService userService;
+    private final AccountService accountService;
+    private final TransferService transferService;
     private final AuthAdapter adapter;
 
     @GetMapping("/login")
@@ -36,14 +41,19 @@ public class MainController {
     }
 
     @GetMapping()
-    public String getMainPage(Model model) {
+    public String getMainPage() {
         return "main/main";
     }
 
     @GetMapping("/profile")
-    public String applicantInfo(@RequestParam(name = "page", defaultValue = "0") int page,Model model) {
-        model.addAttribute("user",adapter.getAuthUser());
-        model.addAttribute("page",page);
+    public String applicantInfo(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+        UserDto user = adapter.getAuthUser();
+        model.addAttribute("user", user);
+        List<TransferDto> transfers = transferService.getAllTransfersForProfile(user.getEmail());
+        AccountDto account = accountService.getAccount(userService.getUserModelByEmail(user.getEmail()));
+        model.addAttribute("page", page);
+        model.addAttribute("account", account);
+        model.addAttribute("transfers", transfers);
         return "users/profile";
     }
 
@@ -62,10 +72,10 @@ public class MainController {
             model.addAttribute("userCreationDto", userCreationDto);
             return "login/register";
         }
-        userService.createUser(userCreationDto);
+        UserModel user = userService.createUser(userCreationDto);
 
         try {
-            request.login(userCreationDto.getEmail(), userCreationDto.getPassword());
+            request.login(user.getUniqueId(), user.getPassword());
         } catch (ServletException e) {
             log.error("Error while login ", e);
             return "redirect:/login";

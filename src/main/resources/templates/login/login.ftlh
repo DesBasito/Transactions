@@ -12,15 +12,15 @@
                             <p id="login-text" class="text-black-50 mb-5"><@spring.message 'login.enter'/></p>
 
                             <div class="form-outline form-black mb-4">
-                                <input type="email" id="email" class="form-control form-control-lg"
+                                <label class="form-label" for="unique"><@spring.message 'account'/></label>
+                                <input type="text" id="unique" class="form-control form-control-lg"
                                        name="username"/>
-                                <label class="form-label" for="email"><@spring.message 'register.email'/></label>
                             </div>
 
                             <div class="form-outline form-black mb-4">
+                                <label class="form-label" for="password"><@spring.message 'register.userPassword' /></label>
                                 <input type="password" id="password" class="form-control form-control-lg"
                                        name="password"/>
-                                <label class="form-label" for="password"><@spring.message 'register.userPassword' /></label>
                             </div>
                             <#if _csrf??>
                                 <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"

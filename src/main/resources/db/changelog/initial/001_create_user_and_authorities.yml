@@ -33,6 +33,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: unique_id
+                  type: varchar(6)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
                   name: name
                   type: text
                   constraints:

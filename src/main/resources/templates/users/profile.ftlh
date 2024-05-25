@@ -1,59 +1,5 @@
 <#import "../layout.ftlh" as main>
 <@main.layout ; spring>
-
-
-<#--    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<#--        <div class="modal-dialog modal-lg modal-dialog-scrollable">-->
-<#--            <div class="modal-content">-->
-<#--                <div class="modal-header">-->
-<#--                    <h5 class="modal-title" id="exampleModalLabel"><@spring.message 'profile.applies'/></h5>-->
-<#--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<#--                </div>-->
-<#--                <div class="modal-body">-->
-<#--                    <table class="table">-->
-<#--                        <thead>-->
-<#--                        <tr class="table-active">-->
-<#--                            <th scope="col"><@spring.message 'profile.modal.resume'/></th>-->
-<#--                            <th scope="col"><@spring.message 'profile.modal.vacancy'/></th>-->
-<#--                            <th scope="col"><@spring.message 'profile.modal.chat'/></th>-->
-<#--                        </tr>-->
-<#--                        </thead>-->
-<#--                        <tbody>-->
-
-<#--                        <#list respondents as respondent>-->
-<#--                            <tr>-->
-<#--                                <td>-->
-<#--                                    <a class="nav-link text-decoration-none text-dark"-->
-<#--                                       href="/resume/${respondent.resume.id}">${respondent.resume.name}</a>-->
-<#--                                </td>-->
-<#--                                <th>-->
-<#--                                    <a class="nav-link text-decoration-none text-dark"-->
-<#--                                       href="/vacancies/info/${respondent.vacancy.id}">${respondent.vacancy.name}</a>-->
-<#--                                </th>-->
-<#--                                <td>-->
-<#--                                    <button type="button" class="btn btn-success"-->
-<#--                                            onclick="window.location.href='/chat/${respondent.id}'">-->
-<#--                                        <@spring.message 'profile.chat.to'/>-->
-<#--                                    </button>-->
-<#--                                </td>-->
-<#--                            </tr>-->
-<#--                        </#list>-->
-
-<#--                        </tbody>-->
-<#--                    </table>-->
-<#--                </div>-->
-<#--                <div class="modal-footer">-->
-<#--                    <button type="button" class="btn btn-secondary"-->
-<#--                            data-bs-dismiss="modal"> <@spring.message 'profile.modal.close'/></button>-->
-<#--                </div>-->
-<#--            </div>-->
-<#--        </div>-->
-<#--    </div>-->
-
-
-
-
-
     <div class="container my-5 mx-auto" style="max-width: 1100px; background: white; border-radius: 15px">
     <div class="row g-2 my-3 py-3">
 
@@ -65,8 +11,7 @@
 
         <div class="col-md">
             <div class="card border-0 align-items-center text-align-center">
-                <a href="#"
-                   class="btn btn-danger res-btn text-decoration-none">+</a>
+                ${user.uuid}
             </div>
         </div>
 
@@ -103,6 +48,44 @@
         <#--                </#list>-->
         <#--            </div>-->
         <#--        </#if>-->
+        <table class="table">
+            <thead>
+            <tr class="table-active">
+                <th scope="col">#</th>
+                <th scope="col"><@spring.message 'sender'/></th>
+                <th scope="col"><@spring.message 'recipient'/></th>
+                <th scope="col"><@spring.message 'sumOfTransfer'/></th>
+                <th scope="col"><@spring.message 'date'/></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <#list transfers as transfer>
+                <tr>
+                    <td>
+                        <p>${transfer?counter}</p>
+                    </td>
+                    <th>
+                        <#if transfer.sender??>
+                            <p>${transfer.sender}</p>
+                            <#else >
+                            <p>Terminal</p>
+                        </#if>
+                    </th>
+                    <td>
+                        <p>${transfer.recipient}</p>
+                    </td>
+                    <td>
+                        <p>${transfer.sumOfTransfer}</p>
+                    </td>
+                    <td>
+                        <p>${transfer.transactionDate}</p>
+                    </td>
+                </tr>
+            </#list>
+
+            </tbody>
+        </table>
         <div class="mb-2" id="pagination-profile">
             <nav class="mb-2" aria-label="Page navigation example" id="applicant-pageButtons">
                 <ul class="pagination">

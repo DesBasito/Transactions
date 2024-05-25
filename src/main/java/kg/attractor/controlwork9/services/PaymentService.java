@@ -70,7 +70,7 @@ public class PaymentService {
     public void payProvider(String sender,String recipient, Double balance) {
         UserModel senderModel = userService.getUserModelByEmail(sender);
         AccountDto senderAccount = accountService.getAccount(senderModel);
-        if (senderAccount.getBalance()<6){
+        if (senderAccount.getBalance()<6 || balance>senderAccount.getBalance()){
             throw new IllegalArgumentException("you have only "+senderAccount.getBalance()+"$ and услуга 5$");
         }
         Account account1 = new Account();

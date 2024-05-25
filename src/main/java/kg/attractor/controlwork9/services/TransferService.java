@@ -32,7 +32,7 @@ public class TransferService {
                 .id(transfers.getId())
                 .sumOfTransfer(transfers.getSumOfTransfer())
                 .sender(transfers.getSender() == null ? null : transfers.getSender().getUniqueId())
-                .recipient(transfers.getRecipient() == null ? null : transfers.getSender().getUniqueId())
+                .recipient(transfers.getRecipient() == null ? null : transfers.getRecipient().getUniqueId())
                 .provider(transfers.getRecipientProvider() == null ? null : transfers.getRecipientProvider().getIdentifier()+"("+transfers.getRecipientProvider().getProvider().getName()+")")
                 .transactionDate(transfers.getTransactionDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();

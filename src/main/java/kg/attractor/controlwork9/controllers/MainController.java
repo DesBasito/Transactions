@@ -90,7 +90,7 @@ public class MainController {
             request.login(user.getUniqueId(), user.getPassword());
         } catch (ServletException e) {
             log.error("Error while login ", e);
-            return "redirect:/login";
+            return "redirect:/profile";
         }
         return "redirect:/";
     }

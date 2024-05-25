@@ -27,12 +27,12 @@ VALUES (200.00, 'john.doe@example.com', 'jane.smith@example.com', '2024-05-25 10
        (500.00, 'alice.jones@example.com', 'bob.brown@example.com', '2024-05-25 12:00:00'),
        (100.00, 'bob.brown@example.com', 'john.doe@example.com', '2024-05-25 13:00:00');
 
-INSERT INTO PROVIDERS (NAME,Balance)
+INSERT INTO PROVIDERS (NAME,Balance,commission)
 VALUES
-    ('O!',0.0),
-    ('Beeline',0.0),
-    ('Megacom',0.0),
-    ('BSK',0.0);
+    ('O!',0.0,0.10),
+    ('Beeline',0.0,0.02),
+    ('Megacom',0.0,0.08),
+    ('BSK',0.0,0.03);
 
 INSERT INTO USERS_PROVIDER (identifier, provider, balance)
 VALUES

@@ -26,6 +26,7 @@
                                 <h5 class="card-title"><a href="/provider/${provider.id}"
                                                           class="text-decoration-none text-dark">${provider.name}</a>
                                 </h5>
+                                <p>commission: ${provider.commission}</p>
                             </div>
                         </div>
                     </#list>

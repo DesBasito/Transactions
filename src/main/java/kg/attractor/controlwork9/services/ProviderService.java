@@ -46,6 +46,7 @@ public class ProviderService {
         return ProviderDto.builder()
                 .id(provider.getId())
                 .name(provider.getName())
+                .commission(100*provider.getCommission())
                 .build();
     }
 

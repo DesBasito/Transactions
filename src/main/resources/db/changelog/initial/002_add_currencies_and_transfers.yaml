@@ -21,6 +21,9 @@ databaseChangeLog:
               - column:
                   name: balance
                   type: Double
+              - column:
+                  name: commission
+                  type: Double
   - changeSet:
       id: create-users-of-providers-table
       author: Abu

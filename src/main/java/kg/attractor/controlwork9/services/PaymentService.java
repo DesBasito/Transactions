@@ -69,27 +69,34 @@ public class PaymentService {
 
     public void payProvider(String sender,String recipient, Double balance) {
         UserModel senderModel = userService.getUserModelByEmail(sender);
+        Provider provider = new Provider();
+        UserProvider  userProvider1 = new UserProvider();
         AccountDto senderAccount = accountService.getAccount(senderModel);
         if (senderAccount.getBalance()<6 || balance>senderAccount.getBalance()){
-            throw new IllegalArgumentException("you have only "+senderAccount.getBalance()+"$ and услуга 5$");
+            throw new IllegalArgumentException("you have only "+senderAccount.getBalance()+"$ and услуга ");
         }
-        Account account1 = new Account();
-        account1.setId(senderAccount.getId());
-        account1.setBalance(senderAccount.getBalance()-(balance+5D));
-        account1.setOwner(senderModel);
-
-
-        Provider provider = new Provider();
         UserProviderDto userProviderDto = providerService.getUserProviderDto(recipient);
         UserProvider userProvider = providerService.getUserProvider(recipient);
         Provider provider1 = providerService.getProviderById(userProviderDto.getProviderId());
+
+        userProvider1.setIdentifier(userProvider.getIdentifier());
+        userProvider1.setProvider(userProvider.getProvider());
+        userProvider1.setBalance(userProvider.getBalance()+balance);
+
+        Account account1 = new Account();
+        account1.setId(senderAccount.getId());
+        account1.setBalance(senderAccount.getBalance()-(balance*provider1.getCommission()));
+        account1.setOwner(senderModel);
+
+
         provider.setId(provider1.getId());
         provider.setName(provider1.getName());
-        provider.setBalance(provider1.getBalance()+5D);
+        provider.setBalance(provider1.getBalance()+(balance*provider1.getCommission()));
+        provider.setCommission(provider1.getCommission());
         providerService.save(provider);
 
         accountService.saveAccount(account1);
-        saveTransferProvider(senderModel,userProvider,balance+5D);
+        saveTransferProvider(senderModel,userProvider,balance+(balance*provider1.getCommission()));
     }
 
     private void saveTransferProvider(UserModel sender, UserProvider recipient, Double balance){

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public class TransferService {
         List<Transfers> transfersRecipients = transfersRepository.findTransfersByRecipient_Email(email);
         transfers.addAll(transfersSender);
         transfers.addAll(transfersRecipients);
+        transfers.sort(Comparator.comparing(Transfers::getTransactionDate));
         return transfers.stream().map(this::getDto).collect(Collectors.toList());
     }
 

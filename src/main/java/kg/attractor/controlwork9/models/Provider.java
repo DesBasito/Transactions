@@ -23,6 +23,9 @@ public class Provider {
     @Column
     private Double balance;
 
+    @Column
+    private Double commission;
+
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "provider")
     List<UserProvider> userProviders;
 }
